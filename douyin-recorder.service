@@ -1,0 +1,30 @@
+[Unit]
+Description=DouyinLiveRecorder - 抖音直播录制服务
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=your_username
+Group=your_username
+WorkingDirectory=/path/to/DouyinLiveRecorder
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=PYTHONPATH=/path/to/DouyinLiveRecorder
+ExecStart=/usr/bin/python3 /path/to/DouyinLiveRecorder/server_deploy.py
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=douyin-recorder
+
+# 安全设置
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/path/to/DouyinLiveRecorder/download
+ReadWritePaths=/path/to/DouyinLiveRecorder/logs
+
+[Install]
+WantedBy=multi-user.target

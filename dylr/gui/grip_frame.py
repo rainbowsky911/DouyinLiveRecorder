@@ -9,7 +9,7 @@ import os
 import subprocess
 import sys
 import tkinter as tk
-import tkinter.messagebox
+from tkinter import messagebox
 from functools import partial
 from tkinter import ttk
 
@@ -81,7 +81,7 @@ class GripFrame(ttk.LabelFrame):
 
     def request_remove(self, web_rid, name):
         """ 询问是否删除，避免误删 """
-        res = tk.messagebox.askokcancel('删除房间', f'确定要删除房间{name}({web_rid})吗？\n如果不想监测和录制可以将其设为不自动录制。')
+        res = messagebox.askokcancel('删除房间', f'确定要删除房间{name}({web_rid})吗？\n如果不想监测和录制可以将其设为不自动录制。')
         if not res:
             return
         self.remove(web_rid)
@@ -135,8 +135,17 @@ class GripFrame(ttk.LabelFrame):
 
     def _open_explorer(self, path: str):
         if not os.path.exists(path):
-            os.mkdir(path)
-        if sys.platform == 'mac':
-            subprocess.call(["open", path])
-        else:
-            os.startfile(path.replace('/', '\\'))
+            os.makedirs(path, exist_ok=True)
+        
+        try:
+            if sys.platform == 'darwin':  # macOS
+                subprocess.call(["open", path])
+            elif sys.platform == 'linux':
+                subprocess.call(["xdg-open", path])
+            elif sys.platform == 'win32':  # Windows
+                os.startfile(path.replace('/', '\\'))
+            else:
+                # 其他系统，尝试用默认程序打开
+                subprocess.call(["xdg-open", path])
+        except Exception as e:
+            print(f"打开目录失败: {e}")

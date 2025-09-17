@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  douyin-recorder:
+    build: .
+    container_name: douyin-live-recorder
+    restart: unless-stopped
+    
+    # 环境变量
+    environment:
+      - TZ=Asia/Shanghai
+      - PYTHONUNBUFFERED=1
+    
+    # 数据卷映射
+    volumes:
+      - ./download:/app/download
+      - ./logs:/app/logs
+      - ./config.txt:/app/config.txt:ro
+      - ./rooms.json:/app/rooms.json
+    
+    # 网络模式
+    network_mode: "host"
+    
+    # 资源限制
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    
+    # 日志配置
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "3"
+    
+    # 健康检查
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os; exit(0 if os.path.exists('/app/logs') else 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+# 可选：添加监控服务
+  # watchtower:
+  #   image: containrrr/watchtower
+  #   container_name: watchtower
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   command: --interval 30 douyin-live-recorder
+  #   restart: unless-stopped
