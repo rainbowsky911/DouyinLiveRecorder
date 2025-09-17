@@ -92,7 +92,9 @@ def check_thread_main():
         check_rooms_queue.reverse()
         futures = []
         for i in range(config.get_check_threads()):
-            futures.append(monitor_thread_manager.new_check_task(check_thread_task))
+            future = monitor_thread_manager.new_check_task(check_thread_task)
+            if future:  # 只有在成功提交任务时才添加到futures列表
+                futures.append(future)
         # 等待所有检测线程完成本轮检测
         for future in futures:
             future.result()

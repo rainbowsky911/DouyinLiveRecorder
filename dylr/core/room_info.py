@@ -4,7 +4,6 @@
 :date: 2023.02.10
 :brief: 检测的房间信息，包含是否开播、流地址等
 """
-from dylr.util import cookie_utils
 
 
 class RoomInfo:
@@ -19,6 +18,7 @@ class RoomInfo:
     def is_going_on_live(self) -> bool:
         """ 是否在直播 """
         if not self.room_json or 'status' not in self.room_json:
+            from dylr.util import cookie_utils
             cookie_utils.record_cookie_failed()
             return False
         return self.room_json['status'] == 2

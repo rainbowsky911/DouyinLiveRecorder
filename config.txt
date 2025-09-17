@@ -28,3 +28,19 @@ check_wait = 0.5
 # 命令行模式下，可以按下 L 键查看正在录制的直播房间列表
 # 实验性功能，可能无效或有其他bug(无法关闭软件等，通常在Linux下无效)，若无效请设置为false
 cli_key_l = false
+
+# FFmpeg相关配置（可选，用于自动转码功能）
+# FFmpeg可执行文件的路径，如果已添加到环境变量可留空
+ffmpeg_path =/opt/homebrew/anaconda3/bin/ffmpeg
+
+# 是否开启自动转码，将录制的FLV文件自动转码为MP4
+auto_transcode = true
+
+# 转码时使用的视频编码器，copy表示无损复制，h264表示重新编码
+auto_transcode_encoder = copy
+
+# 转码时的比特率，0表示保持原比特率
+auto_transcode_bps = 0
+
+# 转码完成后是否删除原始FLV文件
+# auto_transcode_delete_origin = false

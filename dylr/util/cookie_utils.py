@@ -76,19 +76,25 @@ def auto_get_cookie():
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36",
         "cookie": cookie
     }
-    resp = requests.get(url, headers=header, proxies=dy_api.get_proxies())
-    ttwid = None
-    for c in resp.cookies:
-        if c.name == 'ttwid':
-            ttwid = c.value
-            break
+    
+    try:
+        resp = requests.get(url, headers=header, proxies=dy_api.get_proxies(), timeout=10)
+        ttwid = None
+        for c in resp.cookies:
+            if c.name == 'ttwid':
+                ttwid = c.value
+                break
 
-    if ttwid is not None:
-        cookie += '; ttwid=' + ttwid
+        if ttwid is not None:
+            cookie += '; ttwid=' + ttwid
+            cookie_cache = cookie
+            logger.info_and_print(f'cookie获取完成')
+        else:
+            logger.fatal_and_print(f'cookie获取失败：未找到ttwid')
+    except Exception as e:
+        logger.fatal_and_print(f'cookie获取失败：{e}')
+        # 使用默认cookie，让程序继续运行
         cookie_cache = cookie
-        logger.info_and_print(f'cookie获取完成')
-    else:
-        logger.fatal_and_print(f'cookie获取失败')
 
     cookie_failed = 0
 

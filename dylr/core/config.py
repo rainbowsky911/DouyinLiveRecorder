@@ -23,11 +23,11 @@ configs = {
     'check_threads': 1,
     'check_wait': 0.5,
     'cli_key_l': False,
-    # 'ffmpeg_path': '',
-    # 'auto_transcode': False,
-    # 'auto_transcode_encoder': 'copy',
-    # 'auto_transcode_bps': '0',
-    # 'auto_transcode_delete_origin': False,
+    'ffmpeg_path': '',
+    'auto_transcode': False,
+    'auto_transcode_encoder': 'copy',
+    'auto_transcode_bps': '0',
+    'auto_transcode_delete_origin': False,
 }
 
 

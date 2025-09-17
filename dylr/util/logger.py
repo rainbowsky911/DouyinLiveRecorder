@@ -62,7 +62,11 @@ def error_and_print(text: str):
 
 
 def fatal_and_print(text: str):
-    if not app.win_mode:
+    try:
+        if not app.win_mode:
+            print(text)
+    except AttributeError:
+        # app.win_mode might not be initialized yet during import
         print(text)
     fatal(text)
 
