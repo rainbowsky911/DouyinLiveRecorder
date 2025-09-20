@@ -4,7 +4,8 @@
     "name": "茜茜芭蕾形体舞蹈",
     "auto_record": true,
     "record_danmu": true,
-    "important": false,
+    "important": true,
     "user_sec_id": null
   }
+
 ]
